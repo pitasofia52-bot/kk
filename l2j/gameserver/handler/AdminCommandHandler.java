@@ -18,6 +18,7 @@ import net.sf.l2j.gameserver.handler.admincommandhandlers.AdminEditChar;
 import net.sf.l2j.gameserver.handler.admincommandhandlers.AdminEditNpc;
 import net.sf.l2j.gameserver.handler.admincommandhandlers.AdminEffects;
 import net.sf.l2j.gameserver.handler.admincommandhandlers.AdminEnchant;
+import net.sf.l2j.gameserver.handler.admincommandhandlers.AdminEventRaidBoss;
 import net.sf.l2j.gameserver.handler.admincommandhandlers.AdminExpSp;
 import net.sf.l2j.gameserver.handler.admincommandhandlers.AdminGeoEngine;
 import net.sf.l2j.gameserver.handler.admincommandhandlers.AdminGm;
@@ -123,6 +124,9 @@ public class AdminCommandHandler
 		
 		// NEW: Bot buffs inspector
 		registerAdminCommandHandler(new AdminBotBuffs());
+		
+		// NEW: Event Raid Boss manual trigger
+		registerAdminCommandHandler(new AdminEventRaidBoss());
 		
 		// Fake players handlers (existing)
 		registerAdminCommandHandler(new AdminFakePlayers());

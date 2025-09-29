@@ -1,6 +1,8 @@
 package net.sf.l2j.gameserver.scripting.scripts.events;
 
 import java.util.Collection;
+import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 
 import net.sf.l2j.commons.random.Rnd;
 
@@ -31,6 +33,7 @@ public class EventRaidBoss extends ScheduledQuest
     private volatile boolean _activeWindow = false;
     private Npc _raid;
     private Npc _teleporter;
+    private final Set<Integer> _grantedThisWindow = ConcurrentHashMap.newKeySet();
 
     public EventRaidBoss()
     {
@@ -67,6 +70,7 @@ public class EventRaidBoss extends ScheduledQuest
             return false;
 
         _activeWindow = true;
+        _grantedThisWindow.clear();
 
         // Spawn random RB
         final int rbId = RAID_IDS[Rnd.get(RAID_IDS.length)];
@@ -78,12 +82,7 @@ public class EventRaidBoss extends ScheduledQuest
         // Announce
         Broadcast.announceToOnlinePlayers("Event Raid Boss: teleport from Giran is now open.");
 
-        // Give 10x 7125 to all online players
-        for (Player p : World.getInstance().getPlayers())
-        {
-            if (p != null && p.isOnline())
-                p.addItem("EventRaidBoss", ITEM_SCROLL, GIVE_SCROLLS, null, true);
-        }
+        // Note: Scrolls are now granted on teleport, not here.
         return true;
     }
 
@@ -99,6 +98,7 @@ public class EventRaidBoss extends ScheduledQuest
             _teleporter = null;
         }
 
+        // Remove remaining event scrolls from online players at window end.
         for (Player p : World.getInstance().getPlayers())
         {
             if (p == null || !p.isOnline())
@@ -110,6 +110,7 @@ public class EventRaidBoss extends ScheduledQuest
         }
 
         _activeWindow = false;
+        _grantedThisWindow.clear();
     }
 
     @Override
@@ -135,7 +136,7 @@ public class EventRaidBoss extends ScheduledQuest
         sb.append("<html><body>");
         sb.append("<center><br><font color=\"LEVEL\">Event Raid Boss</font><br><br>");
         sb.append("Teleport from Giran to the Raid Boss area.<br><br>");
-        if (_activeWindow && _raid != null)
+        if (_activeWindow)
             sb.append("<button value=\"Teleport\" action=\"bypass -h Quest ").append(getName()).append(" teleport\" width=100 height=24 back=\"L2UI_ct1.button_df\" fore=\"L2UI_ct1.button_df\">");
         else
             sb.append("<font color=\"FF0000\">The event is not active.</font>");
@@ -154,8 +155,14 @@ public class EventRaidBoss extends ScheduledQuest
     {
         if ("teleport".equalsIgnoreCase(event))
         {
-            if (_activeWindow && _raid != null)
+            if (_activeWindow)
+            {
+                // Give scrolls once per player per event window.
+                if (_grantedThisWindow.add(player.getObjectId()))
+                    player.addItem("EventRaidBoss", ITEM_SCROLL, GIVE_SCROLLS, null, true);
+
                 player.teleToLocation(RB_LOC, 0);
+            }
             else
                 player.sendMessage("Event Raid Boss is not active.");
         }

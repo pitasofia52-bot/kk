@@ -2,21 +2,24 @@ package net.sf.l2j.gameserver.handler.admincommandhandlers;
 
 import net.sf.l2j.gameserver.handler.IAdminCommandHandler;
 import net.sf.l2j.gameserver.model.actor.instance.Player;
-import net.sf.l2j.gameserver.scripting.ScriptManager;
 import net.sf.l2j.gameserver.scripting.Quest;
+import net.sf.l2j.gameserver.scripting.ScriptManager;
 import net.sf.l2j.gameserver.scripting.scripts.events.EventRaidBoss;
 
 public class AdminEventRaidBoss implements IAdminCommandHandler
 {
-    private static final String[] ADMIN_COMMANDS = { "admin_evenrraidon" }; // //evenrraidon
+    private static final String[] ADMIN_COMMANDS =
+    {
+        "admin_evenrraidon" // usage: //evenrraidon
+    };
 
     @Override
     public boolean useAdminCommand(String command, Player activeChar)
     {
-        if (!activeChar.isGM())
+        if (activeChar == null || !activeChar.isGM())
             return false;
 
-        if (command.equals("admin_evenrraidon"))
+        if ("admin_evenrraidon".equals(command))
         {
             final Quest q = ScriptManager.getInstance().getQuest("EventRaidBoss");
             if (q == null || !(q instanceof EventRaidBoss))
@@ -30,8 +33,7 @@ public class AdminEventRaidBoss implements IAdminCommandHandler
             if (started)
                 activeChar.sendMessage("Event Raid Boss started.");
             else
-                activeChar.sendMessage("Event Raid Boss is already active, or blocked by an active Siege.");
-
+                activeChar.sendMessage("Event Raid Boss is already active or blocked by an active Siege.");
             return true;
         }
         return false;
