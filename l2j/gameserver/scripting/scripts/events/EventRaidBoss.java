@@ -20,8 +20,9 @@ public class EventRaidBoss extends ScheduledQuest
     private static final int[] RAID_IDS = { 60233, 60234, 60235, 60236 };
     private static final SpawnLocation RB_LOC = new SpawnLocation(174239, -88025, -5117, 0);
     private static final int TELEPORTER_NPC = 50011;
-    private static final SpawnLocation TP_LOC = new SpawnLocation(83511, 148641, -3408, 0);
-
+    private static final SpawnLocation TP_LOC = new SpawnLocation(83545, 149225, -3408, 0);
+    private static final SpawnLocation TP_LOCC = new SpawnLocation(174237, -88539, -5116, 0);
+    
     private static final long DESPAWN_RB_MS = 6L * 60 * 60 * 1000; // 6 hours
 
     // Shared state (γιατί υπάρχουν 2 instances από το schedule)
@@ -148,9 +149,8 @@ public class EventRaidBoss extends ScheduledQuest
         StringBuilder sb = new StringBuilder(256);
         sb.append("<html><body>");
         sb.append("<center><br><font color=\"LEVEL\">Event Raid Boss</font><br><br>");
-        sb.append("Teleport from Giran to the Raid Boss area.<br><br>");
         if (ACTIVE)
-            sb.append("<button value=\"Teleport\" action=\"bypass -h Quest ").append(getName()).append(" teleport\" width=120 height=24 back=\"L2UI_ct1.button_df\" fore=\"L2UI_ct1.button_df\">");
+            sb.append("<button value=\"Teleport\" action=\"bypass -h Quest ").append(getName()).append(" teleport\" width=134 height=21 back=\"L2UI_ch3.BigButton3_over\" fore=\"L2UI_ch3.BigButton3\">");
         else
             sb.append("<font color=\"FF0000\">The event is not active.</font>");
         sb.append("</center></body></html>");
@@ -169,7 +169,7 @@ public class EventRaidBoss extends ScheduledQuest
         if ("teleport".equalsIgnoreCase(event))
         {
             if (ACTIVE)
-                player.teleToLocation(RB_LOC, 0);
+                player.teleToLocation(TP_LOCC, 0);
             else
                 player.sendMessage("Event Raid Boss is not active.");
         }
