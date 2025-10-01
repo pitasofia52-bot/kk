@@ -29,6 +29,7 @@ import net.sf.l2j.gameserver.model.actor.ai.type.CreatureAI;
 import net.sf.l2j.gameserver.model.actor.ai.type.SiegeGuardAI;
 import net.sf.l2j.gameserver.model.actor.instance.Player;
 import net.sf.l2j.gameserver.model.actor.instance.Servitor;
+import net.sf.l2j.gameserver.instancemanager.AntiLowmanManager;
 import net.sf.l2j.gameserver.model.actor.status.AttackableStatus;
 import net.sf.l2j.gameserver.model.actor.template.NpcTemplate;
 import net.sf.l2j.gameserver.model.actor.template.NpcTemplate.SkillType;
@@ -148,7 +149,15 @@ public class Attackable extends Npc
 				_commandChannelLastAttack = System.currentTimeMillis(); // update last attack time
 		}
 		
-		// Add damage and hate to the attacker AggroInfo of the L2Attackable _aggroList
+		        // Anti-lowman on-hit tracking (applies only for configured raid IDs internally).
+		        if (isRaid() && attacker != null) {
+		            final Player hitPlayer = attacker.getActingPlayer();
+		            if (hitPlayer != null) {
+		                AntiLowmanManager.getInstance().onHit(this, hitPlayer);
+		            }
+		        }
+		
+		        // Add damage and hate to the attacker AggroInfo of the L2Attackable _aggroList
 		addDamage(attacker, (int) damage, skill);
 		
 		// Reduce the current HP of the L2Attackable and launch the doDie Task if necessary

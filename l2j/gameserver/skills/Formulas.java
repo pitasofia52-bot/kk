@@ -32,6 +32,7 @@ import net.sf.l2j.gameserver.network.serverpackets.SystemMessage;
 import net.sf.l2j.gameserver.skills.effects.EffectTemplate;
 import net.sf.l2j.gameserver.taskmanager.GameTimeTaskManager;
 import net.sf.l2j.gameserver.templates.skills.L2SkillType;
+import net.sf.l2j.gameserver.instancemanager.AntiLowmanManager;
 
 public final class Formulas
 {
@@ -276,7 +277,13 @@ public final class Formulas
 		if (init < 1)
 			init = 1;
 		
-		return cha.calcStat(Stats.REGENERATE_HP_RATE, init, null, null) * hpRegenMultiplier + hpRegenBonus;
+		        // Invisible anti-lowman regen boost for specific raid bosses.
+		        if (cha instanceof Npc && cha.isRaid())
+		        {
+		            hpRegenMultiplier *= AntiLowmanManager.getInstance().getExtraRegenMultiplier((Npc) cha);
+		        }
+		
+		        return cha.calcStat(Stats.REGENERATE_HP_RATE, init, null, null) * hpRegenMultiplier + hpRegenBonus;
 	}
 	
 	/**
