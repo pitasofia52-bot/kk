@@ -378,6 +378,8 @@ public class GameServer
 		net.sf.l2j.gameserver.handler.VoicedCommandHandler.getInstance()
 		    .registerHandler(new net.sf.l2j.gameserver.handler.voicedcommandhandlers.TeleportCommand());
 		net.sf.l2j.gameserver.handler.VoicedCommandHandler.getInstance()
+	    .registerHandler(new net.sf.l2j.gameserver.handler.voicedcommandhandlers.Level80Command());
+		net.sf.l2j.gameserver.handler.VoicedCommandHandler.getInstance()
 		    .registerHandler(new net.sf.l2j.gameserver.custom.tvt.TvTVoiced());
 		net.sf.l2j.gameserver.handler.VoicedCommandHandler.getInstance()
 	        .registerHandler(new net.sf.l2j.gameserver.handler.voicedcommands.ClanVoicedCommand());

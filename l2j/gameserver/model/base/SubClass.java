@@ -39,9 +39,9 @@ public final class SubClass
 	{
 		_class = ClassId.VALUES[classId];
 		_classIndex = classIndex;
-		_exp = Experience.LEVEL[80];
-		_sp = 0;
-		_level = 80;
+				_exp = Experience.LEVEL[40];
+				_sp = 0;
+				_level = 40;
 	}
 	
 	public ClassId getClassDefinition()
@@ -96,8 +96,8 @@ public final class SubClass
 	{
 		if (level > (Experience.MAX_LEVEL - 1))
 			level = (Experience.MAX_LEVEL - 1);
-		else if (level < 80)
-			level = 80;
+				else if (level < 40)
+				level = 40;
 		
 		_level = level;
 	}
