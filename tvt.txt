@@ -1,0 +1,81 @@
+# ==============================
+# Team vs Team (TvT) CONFIG
+# aCis 372 custom
+# ==============================
+
+Enabled = true
+
+# --- Durations (seconds) ---
+RegistrationTime = 300
+EventTime = 600
+RespawnDelay = 7
+
+# --- Participation limits ---
+MinPlayers = 2
+MaxPlayers = 50
+MinLevel = 78
+MaxLevel = 81
+
+# --- Reward threshold ---
+KillRewardMinKills = 5
+
+# --- Per-IP limits ---
+MaxWindowsPerIP = 3
+OverIpLimitNoReward = false
+
+# --- Schedules (HH:MM, 24h, comma separated) ---
+Schedules = 15:00,19:00,23:05,01:00,04:00
+
+# --- Team spawns (x,y,z,heading) ---
+Team1Spawn = 143192,18392,-936,0
+Team2Spawn = 151880,18648,-936,0
+
+# --- Rewards ---
+RewardWinnerItemId = 11000
+RewardWinnerAmount = 5
+RewardLoserItemId = 0
+RewardLoserAmount = 0
+RewardTieItemId = 0
+RewardTieAmount = 0
+
+ShowPersonalStatusOnJoin = true
+
+# --- NPCs ---
+RegistrationNpcId = 60237
+RegistrationNpcLoc = 83218,148603,-3407,0
+
+BufferNpcId = 50009
+SpawnBufferAtTeams = true
+BufferCopiesPerTeam = 2
+BufferOffsets = 0:0;80:0
+
+BufferTeam1Loc = 151672,18456,-936,0
+BufferTeam2Loc = 143384,18584,-936,0
+
+# --- Auras disabled (χρησιμοποιούμε μόνο name colors) ---
+UseTeamAuras = false
+TeamAuraRed = redcircle|flame
+TeamAuraBlue = magiccircle
+
+# --- Team color settings (χρησιμοποιούνται τώρα) ---
+# TitleColorTeam1/2 τα αφήνουμε αν θέλεις στο μέλλον να τα ενεργοποιήσεις.
+TitleColorTeam1 = FF4444
+TitleColorTeam2 = 4488FF
+# Name colors ενεργά: Team1 = Gold (FFD700), Team2 = Green (33CC33)
+NameColorTeam1 = FFD700
+NameColorTeam2 = 33CC33
+
+InventoryFullDropsReward = false
+
+BroadcastMvp = true
+MvpTieEnabled = true
+BlockExternalCombat = true
+BlockAllVoiceInEvent = true
+AllowTvTStatusVoice = true
+
+DisqualifyOnTeleportOut = true
+ApprovedTeleportRadius = 50
+ScrollTeleportAction = BLOCK
+DisqualifyMessage = TvT: Disqualified due to leaving the arena
+
+AllowKarmaPlayers = false
