@@ -103,6 +103,7 @@ import net.sf.l2j.gameserver.network.L2GameClient;
 import net.sf.l2j.gameserver.network.L2GamePacketHandler;
 import net.sf.l2j.gameserver.scripting.ScriptManager;
 import net.sf.l2j.gameserver.taskmanager.AttackStanceTaskManager;
+import net.sf.l2j.gameserver.management.ConnectionMonitor;
 import net.sf.l2j.gameserver.taskmanager.DecayTaskManager;
 import net.sf.l2j.gameserver.taskmanager.GameTimeTaskManager;
 import net.sf.l2j.gameserver.taskmanager.ItemsOnGroundTaskManager;
@@ -442,7 +443,9 @@ public class GameServer
 			_log.log(Level.SEVERE, "FATAL: Failed to open server socket. Reason: " + e.getMessage(), e);
 			System.exit(1);
 		}
-		_selectorThread.start();
+				_selectorThread.start();
+				// Schedule connection monitor to run every 5 minutes (initial delay 5 minutes)
+				ThreadPool.scheduleAtFixedRate(new ConnectionMonitor(), 300000L, 300000L);
 	}
 	
 	public static GameServer getInstance()
