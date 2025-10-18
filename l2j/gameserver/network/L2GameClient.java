@@ -30,6 +30,7 @@ import net.sf.l2j.gameserver.model.pledge.Clan;
 import net.sf.l2j.gameserver.network.serverpackets.ActionFailed;
 import net.sf.l2j.gameserver.network.serverpackets.L2GameServerPacket;
 import net.sf.l2j.gameserver.network.serverpackets.ServerClose;
+import net.sf.l2j.gameserver.management.ActiveClients;
 
 /**
  * Represents a client connected on Game Server
@@ -83,7 +84,9 @@ public final class L2GameClient extends MMOClient<MMOConnection<L2GameClient>> i
 		_stats = new ClientStats();
 		_packetQueue = new ArrayBlockingQueue<>(Config.CLIENT_PACKET_QUEUE_SIZE);
 		
-		_autoSaveInDB = ThreadPool.scheduleAtFixedRate(new AutoSaveTask(), 300000L, 900000L);
+				_autoSaveInDB = ThreadPool.scheduleAtFixedRate(new AutoSaveTask(), 300000L, 900000L);
+				// register client in active registry for monitoring
+				ActiveClients.register(this);
 	}
 	
 	public byte[] enableCrypt()
@@ -598,7 +601,9 @@ public final class L2GameClient extends MMOClient<MMOConnection<L2GameClient>> i
 			}
 			finally
 			{
-				LoginServerThread.getInstance().sendLogout(getAccountName());
+								LoginServerThread.getInstance().sendLogout(getAccountName());
+								// ensure removal from registry even in case of exceptions
+								ActiveClients.unregister(L2GameClient.this);
 			}
 		}
 	}
