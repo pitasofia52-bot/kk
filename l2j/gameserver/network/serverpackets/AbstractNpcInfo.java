@@ -82,15 +82,32 @@ public abstract class AbstractNpcInfo extends L2GameServerPacket
 			if (Config.SHOW_NPC_LVL && _npc instanceof Monster)
 				_title = "Lv " + _npc.getLevel() + (_npc.getTemplate().getAggroRange() > 0 ? "* " : " ") + _title;
 			
-			// NPC crest system
-			if (Config.SHOW_NPC_CREST && _npc.getCastle() != null && _npc.getCastle().getOwnerId() != 0)
-			{
-				Clan clan = ClanTable.getInstance().getClan(_npc.getCastle().getOwnerId());
-				_clanCrest = clan.getCrestId();
-				_clanId = clan.getClanId();
-				_allyCrest = clan.getAllyCrestId();
-				_allyId = clan.getAllyId();
-			}
+			            // NPC crest system (only inside Town zones, using town->castle mapping)
+			            if (Config.SHOW_NPC_CREST)
+			            {
+			               final net.sf.l2j.gameserver.model.zone.type.L2TownZone town =
+			                        net.sf.l2j.gameserver.data.xml.MapRegionData.getTown(_npc.getX(), _npc.getY(), _npc.getZ());
+			                if (town != null)
+			                {
+			                    final int castleId = town.getCastleId();
+			                    if (castleId > 0)
+			                    {
+			                        final net.sf.l2j.gameserver.model.entity.Castle castle =
+			                                net.sf.l2j.gameserver.instancemanager.CastleManager.getInstance().getCastleById(castleId);
+			                        if (castle != null && castle.getOwnerId() > 0)
+			                        {
+			                            final Clan clan = ClanTable.getInstance().getClan(castle.getOwnerId());
+			                            if (clan != null)
+			                            {
+			                                _clanCrest = clan.getCrestId();
+			                               _clanId = clan.getClanId();
+		                                _allyCrest = clan.getAllyCrestId();
+			                                _allyId = clan.getAllyId();
+			                            }
+			                        }
+			                    }
+			                }
+			           }
 		}
 		
 		@Override
